@@ -86,16 +86,23 @@ PetStoreProject/
 ```bash
 git clone git@github.com:iwtzmn/petstore-api-tests.git
 cd petstore-api-tests
+```bash
 
 ### 2️⃣ Клонирование репозитория
+```bash
 pip install -r requirements.txt
+```bash
 
 ### 3️⃣ Запуск тестов
+```bash
 pytest -v
+```bash
 
 ### 4️⃣ Генерация отчёта Allure
+```bash
 pytest --alluredir=allure-results
 allure serve allure-results
+```bash
 
 ---
 
