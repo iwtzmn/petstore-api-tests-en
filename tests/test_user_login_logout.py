@@ -20,7 +20,7 @@ PASSWORD_BAD = "wrong_pass!"
 @pytest.mark.regression
 @allure.feature("User")
 @allure.story("User login (parametrized)")
-def test_user_login_parametrized(api_client, unique_user_id, unique_username,
+def test_user_login(api_client, unique_user_id, unique_username,
                                  valid_username, valid_password, expected_codes,
                                  make_user, cleanup):
     logging.info(f"--- ТЕСТ НАЧАТ (id={unique_user_id}, username={unique_username}) ---")

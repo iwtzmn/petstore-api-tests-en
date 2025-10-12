@@ -59,7 +59,7 @@ def test_order_get(api_client, unique_order_id, unique_pet_id, make_order, clean
     ],
 )
 @pytest.mark.regression
-def test_order_create_parametrized(api_client, unique_order_id, unique_pet_id,
+def test_order_create(api_client, unique_order_id, unique_pet_id,
                                    make_order, cleanup, status, complete, quantity):
     logging.info(
         f"CREATE(PARAM) order_id={unique_order_id} pet_id={unique_pet_id} "
