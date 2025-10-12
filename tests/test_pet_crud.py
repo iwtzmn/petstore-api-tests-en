@@ -40,7 +40,7 @@ def test_pet_get(api_client, pet_id):
 
 
 @allure.feature("Pet")
-@allure.story("Update pet status")
+@allure.story("Update pet status (parametrized)")
 @pytest.mark.parametrize(
     "initial_status, updated_status",
     [
@@ -78,7 +78,7 @@ def test_pet_update_status(api_client, unique_pet_id, make_pet, cleanup, initial
 
 # Для flaky используем pytest-rerunfailures:
 @allure.feature("Pet")
-@allure.story("Delete pet")
+@allure.story("Delete pet (flaky public stand)")
 @pytest.mark.flaky(reruns=2, reruns_delay=1)  # повторим, если флак на публичном стенде
 @pytest.mark.regression
 def test_pet_delete(api_client, pet_id):

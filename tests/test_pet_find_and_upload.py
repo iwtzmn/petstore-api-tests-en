@@ -18,7 +18,7 @@ from conftest import get_with_retry, attach_json
     ],
 )
 @allure.feature("Pet")
-@allure.story("Update pet via form-data")
+@allure.story("Update pet via form-data (parametrized)")
 def test_pet_update_via_form(api_client, unique_pet_id, make_pet, new_name, new_status, cleanup):
     logging.info(f"[UPDATE-FORM] START pet_id={unique_pet_id}")
     with allure.step("Создать питомца для form-data обновления"):

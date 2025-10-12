@@ -45,7 +45,7 @@ def test_user_get(api_client, unique_user_id, unique_username, make_user, cleanu
 
 
 @allure.feature("User")
-@allure.story("Update user status")
+@allure.story("Update user status (parametrized)")
 @pytest.mark.parametrize(
     "initial_status, updated_status",
     [

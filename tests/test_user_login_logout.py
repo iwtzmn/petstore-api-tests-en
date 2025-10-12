@@ -63,7 +63,7 @@ def test_user_login_parametrized(api_client, unique_user_id, unique_username,
 
 @pytest.mark.smoke
 @allure.feature("User")
-@allure.story("User logout (smoke)")
+@allure.story("User logout")
 def test_user_logout(api_client):
     logging.info("--- ТЕСТ НАЧАТ (logout smoke) ---")
 
