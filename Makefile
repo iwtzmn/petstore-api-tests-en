@@ -6,6 +6,7 @@ SHELL := /bin/bash
 ALLURE_RESULTS ?= allure-results
 ALLURE_REPORT  ?= allure-report
 PYTEST         ?= pytest
+EXIT_CODE_FILE ?= .pytest_exit_code
 
 # Опции, которые можно передавать в make:
 #   MARK=smoke / regression / "smoke or regression"
@@ -22,11 +23,14 @@ PYTEST         ?= pytest
 
 define RUN_PYTEST
 	@echo "[pytest] running with MARK='$(MARK)' WORKERS='$(WORKERS)' PYTEST_ARGS='$(PYTEST_ARGS)'"
+	@exit_code=0; \
 	$(PYTEST) -v \
 	  $(if $(MARK),-m '$(MARK)',) \
 	  $(if $(WORKERS),-n $(WORKERS),) \
 	  $(PYTEST_ARGS) \
-	  --alluredir=$(ALLURE_RESULTS)
+	  --alluredir=$(ALLURE_RESULTS) || exit_code=$$?; \
+	echo "[pytest] exit code: $$exit_code"; \
+	echo $$exit_code > $(EXIT_CODE_FILE)
 endef
 
 .PHONY: help clean results report smoke regression open-report
@@ -34,8 +38,8 @@ endef
 help:
 	@echo "Targets:"
 	@echo "  make report            - clean + pytest + allure open"
-	@echo "  make smoke             - report с MARK=smoke"
-	@echo "  make regression        - report с MARK=regression"
+	@echo "  make smoke             - report с MARK=smoke + allure open"
+	@echo "  make regression        - report с MARK=regression + allure open"
 	@echo "  make clean             - удалить allure-results и allure-report"
 	@echo "  make open-report       - только открыть уже сгенерированный отчёт"
 	@echo ""
@@ -51,9 +55,10 @@ results: clean
 
 report: results
 	@echo "[allure] generate report → $(ALLURE_REPORT) from $(ALLURE_RESULTS)"
-	allure generate --clean -o $(ALLURE_REPORT) $(ALLURE_RESULTS)
+	allure generate --clean -o $(ALLURE_REPORT) $(ALLURE_RESULTS) || true
 	@echo "[allure] open report"
-	allure open $(ALLURE_REPORT)
+	- allure open $(ALLURE_REPORT) >/dev/null 2>&1 &
+	@exit_code=$$(cat $(EXIT_CODE_FILE) 2>/dev/null || echo 0); echo "[make] returning pytest exit $$exit_code"; exit $$exit_code
 
 smoke:
 	@$(MAKE) report MARK=smoke
