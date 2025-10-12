@@ -1,0 +1,51 @@
+# виртуальное окружение
+.venv/
+env/
+venv/
+
+# кэш pytest
+.pytest_cache/
+__pycache__/
+
+# IDE
+.idea/
+.vscode/
+
+# результаты тестов и отчётов
+allure-results/
+allure-report/
+reports/
+htmlcov/
+coverage.xml
+
+# временные файлы и логи
+*.log
+*.tmp
+*.bak
+*.swp
+
+# macOS
+.DS_Store
+
+# файлы окружения
+.env
+.env.*
+
+# системные артефакты Python
+*.pyc
+*.pyo
+*.pyd
+
+# пакеты и установочные файлы
+*.egg
+*.egg-info/
+dist/
+build/
+*.whl
+
+# Jupyter / notebooks
+.ipynb_checkpoints/
+
+# кэш pip
+__pypackages__/
+pip-wheel-metadata/

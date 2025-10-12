@@ -1,0 +1,7 @@
+pytest
+requests
+pytest-html
+pytest-xdist
+python-dotenv
+pytest-rerunfailures
+allure-pytest
