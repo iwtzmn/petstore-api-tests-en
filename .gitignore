@@ -10,6 +10,7 @@ __pycache__/
 # IDE
 .idea/
 .vscode/
+.pytest_exit_code
 
 # результаты тестов и отчётов
 allure-results/
