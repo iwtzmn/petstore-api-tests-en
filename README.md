@@ -86,7 +86,7 @@ PetStoreProject/
 ```bash
 git clone git@github.com:iwtzmn/petstore-api-tests.git
 cd petstore-api-tests
-```bash
+bash```
 
 ### 2️⃣ Клонирование репозитория
 ```bash
