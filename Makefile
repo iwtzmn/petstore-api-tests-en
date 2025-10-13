@@ -47,7 +47,7 @@ help:
 	@echo "Примеры:   make report MARK='smoke or regression' WORKERS=auto"
 
 clean:
-	@rm -rf $(ALLURE_RESULTS) $(ALLURE_REPORT)
+	@rm -rf $(ALLURE_RESULTS) $(ALLURE_REPORT) $(EXIT_CODE_FILE) now.txt
 
 results: clean
 	@echo "[make] collecting results into $(ALLURE_RESULTS)"

@@ -7,7 +7,7 @@ from conftest import get_with_retry, attach_json
 @allure.feature("User")
 @allure.story("Create user")
 @pytest.mark.smoke
-@pytest.mark.regression
+# Проверяет базовый happy-path (один стабильный заказ)
 def test_user_create(api_client, unique_user_id, unique_username, make_user, cleanup):
     logging.info(f"CREATE user: id={unique_user_id}, username={unique_username}")
     with allure.step("Создать пользователя через POST /user"):
