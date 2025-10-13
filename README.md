@@ -74,6 +74,21 @@
 <li class="has-line-data" data-line-start="58" data-line-end="60">⚠️ Невалидные сценарии — 10</li>
 </ul>
 <hr>
+<h2>🧰 Диагностика тестов</h2>
+<p>Набор полезных команд для проверки, что Pytest корректно видит все тесты и параметризации.</p>
+
+<h3>🔹 Полный список тест-нод</h3>
+<p>Сохраняет все найденные Pytest ноды (включая параметризованные) в файл <code>now.txt</code>:</p>
+<pre><code>pytest --collect-only -q &gt; now.txt</code></pre>
+
+<h3>🔹 Сводка по файлам (сколько тестов в каждом)</h3>
+<p>Показывает количество тестов в каждом файле:</p>
+<pre><code>awk -F'::' '{print $1}' now.txt | sort | uniq -c</code></pre>
+
+<h3>🔹 Посмотреть тесты внутри конкретного файла</h3>
+<p>Вывести все тестовые функции (включая параметризованные варианты) из файла:</p>
+<pre><code>pytest tests/test_store_order.py --collect-only -q</code></pre>
+<hr>
 <h2 class="code-line" data-line-start=62 data-line-end=63 ><a id="___62"></a>🧩 Используемые подходы</h2>
 <h3 class="code-line" data-line-start=64 data-line-end=65 ><a id="_Fixture_64"></a>🔹 Fixture</h3>
 <p class="has-line-data" data-line-start="65" data-line-end="66">Используются для:</p>
@@ -116,26 +131,26 @@
 <p class="has-line-data" data-line-start="102" data-line-end="103">Убедитесь, что находитесь там, где лежат <code>pytest.ini</code>, <code>requirements.txt</code>, <code>Makefile</code>.</p>
 <h3 class="code-line" data-line-start=104 data-line-end=105 ><a id="2____104"></a>2️⃣ Создайте виртуальное окружение</h3>
 <p class="has-line-data" data-line-start="105" data-line-end="108"><strong>macOS / Linux</strong><br>
-python3 -m venv .venv<br>
-source .venv/bin/activate</p>
+<pre><code>python3 -m venv .venv<br>
+source .venv/bin/activate</code></pre></p>
 <p class="has-line-data" data-line-start="109" data-line-end="112"><strong>Windows</strong><br>
-python -m venv .venv<br>
-..venv\Scripts\Activate.ps1</p>
+<pre><code>python -m venv .venv<br>
+..venv\Scripts\Activate.ps1</code></pre></p>
 <h3 class="code-line" data-line-start=113 data-line-end=114 ><a id="2___113"></a>2️⃣ Установите зависимости</h3>
-<p class="has-line-data" data-line-start="114" data-line-end="115"><strong>pip install -r requirements.txt</strong></p>
+<p class="has-line-data" data-line-start="114" data-line-end="115"><pre><code>pip install -r requirements.txt</code></pre></p>
 <h3 class="code-line" data-line-start=116 data-line-end=117 ><a id="3___116"></a>3️⃣ Запуск тестов</h3>
-<p class="has-line-data" data-line-start="117" data-line-end="120"><strong>pytest -v</strong><br>
+<p class="has-line-data" data-line-start="117" data-line-end="120"><pre><code>pytest -v</code></pre><br>
 или параллельно:<br>
-<strong>pytest -v -n auto</strong></p>
+<pre><code>pytest -v -n auto</code></pre></p>
 <h3 class="code-line" data-line-start=121 data-line-end=122 ><a id="4___Allure_121"></a>4️⃣ Генерация отчёта Allure</h3>
-<p class="has-line-data" data-line-start="122" data-line-end="124"><strong>pytest --alluredir=allure-results</strong><br>
-<strong>allure serve allure-results</strong></p>
+<p class="has-line-data" data-line-start="122" data-line-end="124"><pre><code>pytest --alluredir=allure-results</code></pre><br>
+<pre><code>allure serve allure-results</code></pre></p>
 <p class="has-line-data" data-line-start="125" data-line-end="128">Если allure не найден:<br>
-•   macOS → <strong>brew install allure</strong><br>
-•   Windows → <strong>choco install allure или scoop install allure</strong></p>
+•   macOS → <pre><code>brew install allure</code></pre><br>
+•   Windows → <pre><code>choco install allure или scoop install allure</code></pre></p>
 <hr>
 <h2 class="code-line" data-line-start=131 data-line-end=132 ><a id="__131"></a>📊 Отчётность</h2>
-<p class="has-line-data" data-line-start="132" data-line-end="133">После выполнения тестов можно открыть отчёт: <strong>allure serve allure-results</strong></p>
+<p class="has-line-data" data-line-start="132" data-line-end="133">После выполнения тестов можно открыть отчёт: <pre><code>allure serve allure-results</code></pre></p>
 <p class="has-line-data" data-line-start="134" data-line-end="139">Allure формирует интерактивный отчёт с вкладками:<br>
 •   <strong>Suites</strong> — тестовые наборы по файлам<br>
 •   <strong>Behaviors</strong> — группировка по фичам (@allure.feature, @allure.story)<br>
