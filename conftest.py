@@ -71,7 +71,7 @@ def pet_id(api_client, unique_pet_id, make_pet):
 
 @pytest.fixture
 def make_pet(api_client):
-    """Фабрика: создаёт питомца, дожидается доступности по GET и возвращает pet_id."""
+    """Создаёт питомца, дожидается доступности по GET и возвращает pet_id"""
 
     def _create(pet_id, status="available", name="Chupa"):
         payload = {
@@ -95,7 +95,7 @@ def make_pet(api_client):
 
 @pytest.fixture
 def make_order(api_client):
-    """Фабрика: создаёт заказ, дожидается доступности по GET и возвращает order_id. READ на публичном стенде может быть нестабилен."""
+    """Создаёт заказ, дожидается доступности по GET и возвращает order_id. READ на публичном стенде может быть нестабилен"""
 
     def _create(order_id, pet_id, status="placed", complete=True, quantity=1):
         payload = {
@@ -118,7 +118,7 @@ def make_order(api_client):
 
 @pytest.fixture
 def make_user(api_client):
-    """Фабрика: создаёт пользователя, дожидается доступности по GET и возвращает username."""
+    """Создаёт пользователя, дожидается доступности по GET и возвращает username"""
 
     def _create(id: int, username: str, userStatus: int = 0):
         payload = {
@@ -145,7 +145,7 @@ def make_user(api_client):
 def cleanup(api_client):
     """
     Универсальная очистка: {"pet": [], "user": [], "order": []}
-    В конце теста удаляем всё, что пользователь добавил в списки.
+    В конце теста удаляем всё, что пользователь добавил в списки
     """
     bag = {"pet": [], "user": [], "order": []}
     yield bag
@@ -197,7 +197,7 @@ def get_with_retry(api_client, entity_id, getter=None, field=None, expected=None
 
 
 def _now_iso():
-    """Возвращает текущую дату и время в формате ISO 8601 (UTC)."""
+    """Возвращает текущую дату и время в формате ISO 8601 (UTC)"""
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
