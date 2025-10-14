@@ -7,6 +7,7 @@ from conftest import get_with_retry, attach_json
 @allure.feature("Store")
 @allure.story("Create order")
 @pytest.mark.smoke
+@pytest.mark.regression
 # Проверяет базовый happy-path (один стабильный заказ)
 def test_order_create(api_client, unique_order_id, unique_pet_id, make_order, cleanup):
     logging.info(f"CREATE order_id={unique_order_id} pet_id={unique_pet_id}")
@@ -61,7 +62,7 @@ def test_order_get(api_client, unique_order_id, unique_pet_id, make_order, clean
 @pytest.mark.regression
 # Проверяет несколько комбинаций (placed/approved/delivered…)
 def test_order_create_param(api_client, unique_order_id, unique_pet_id,
-                                   make_order, cleanup, status, complete, quantity):
+                            make_order, cleanup, status, complete, quantity):
     logging.info(
         f"CREATE(PARAM) order_id={unique_order_id} pet_id={unique_pet_id} "
         f"status={status} complete={complete} quantity={quantity}"

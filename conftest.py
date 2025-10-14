@@ -71,7 +71,7 @@ def pet_id(api_client, unique_pet_id, make_pet):
 
 @pytest.fixture
 def make_pet(api_client):
-    """Фабрика: создай питомца с нужным статусом, верни pet_id."""
+    """Фабрика: создаёт питомца, дожидается доступности по GET и возвращает pet_id."""
 
     def _create(pet_id, status="available", name="Chupa"):
         payload = {
@@ -83,21 +83,19 @@ def make_pet(api_client):
             "status": status,
         }
         resp = api_client.add_pet(payload)
-        assert resp.status_code == 200, f"Не создали питомца: {resp.status_code}"
-        assert get_with_retry(api_client, pet_id).status_code == 200
+        # Petstore возвращает 200 на создание; допускаем 201 как каноничный вариант
+        assert resp.status_code in (200, 201), f"Не создали питомца: {resp.status_code}"
+        # Дождаться консистентности чтения (GET /pet/{id} -> 200)
+        resp_get = get_with_retry(api_client, pet_id, getter=api_client.get_pet)
+        assert resp_get.status_code == 200, "Питомец недоступен после создания"
         return pet_id
 
     return _create
 
 
-def _now_iso():
-    """Возвращает текущую дату и время в формате ISO 8601 (UTC)."""
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-
-
 @pytest.fixture
 def make_order(api_client):
-    """Фабрика: создать заказ, вернуть order_id. READ может быть нестабилен на публичном стенде."""
+    """Фабрика: создаёт заказ, дожидается доступности по GET и возвращает order_id. READ на публичном стенде может быть нестабилен."""
 
     def _create(order_id, pet_id, status="placed", complete=True, quantity=1):
         payload = {
@@ -109,7 +107,10 @@ def make_order(api_client):
             "complete": complete,
         }
         resp = api_client.create_order(payload)
-        assert resp.status_code == 200, f"Не создали заказ: {resp.status_code}"
+        assert resp.status_code in (200, 201), f"Не создали заказ: {resp.status_code}"
+        # Дождаться консистентности чтения (GET /store/order/{id} -> 200)
+        resp_get = get_with_retry(api_client, order_id, getter=api_client.get_order)
+        assert resp_get.status_code == 200, "Заказ недоступен после создания"
         return order_id
 
     return _create
@@ -117,9 +118,7 @@ def make_order(api_client):
 
 @pytest.fixture
 def make_user(api_client):
-    """Фабрика: создаёт пользователя и возвращает username.
-       Гарантирует, что пользователь читается по GET перед возвратом.
-    """
+    """Фабрика: создаёт пользователя, дожидается доступности по GET и возвращает username."""
 
     def _create(id: int, username: str, userStatus: int = 0):
         payload = {
@@ -133,12 +132,10 @@ def make_user(api_client):
             "userStatus": userStatus,
         }
         resp = api_client.create_user(payload)
-        assert resp.status_code == 200, f"Не создали пользователя: {resp.status_code}"
-
-        # важное ожидание консистентности
-        resp = get_with_retry(api_client, username, getter=api_client.get_user)
-        assert resp.status_code == 200, "Пользователь недоступен после создания"
-
+        assert resp.status_code in (200, 201), f"Не создали пользователя: {resp.status_code}"
+        # дождаться, что GET /user/{username} начал отдавать пользователя
+        resp_get = get_with_retry(api_client, username, getter=api_client.get_user)
+        assert resp_get.status_code == 200, "Пользователь недоступен после создания"
         return username
 
     return _create
@@ -197,6 +194,11 @@ def get_with_retry(api_client, entity_id, getter=None, field=None, expected=None
 
         time.sleep(delay)
     return resp
+
+
+def _now_iso():
+    """Возвращает текущую дату и время в формате ISO 8601 (UTC)."""
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def attach_json(data, name="payload"):

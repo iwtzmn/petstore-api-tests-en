@@ -7,10 +7,11 @@ from conftest import get_with_retry, attach_json
 @allure.feature("Pet")
 @allure.story("Create pet")
 @pytest.mark.smoke
+@pytest.mark.regression
 # Проверяет базовый happy-path (один стабильный заказ)
 def test_pet_create(api_client, unique_pet_id, make_pet, cleanup):
+    logging.info(f"CREATE pet_id={unique_pet_id}")
     with allure.step(f"CREATE pet_id={unique_pet_id}"):
-        logging.info(f"CREATE pet_id={unique_pet_id}")
         make_pet(unique_pet_id, status="available")
         # добавляем элемент в cleanup
         cleanup["pet"].append(unique_pet_id)
