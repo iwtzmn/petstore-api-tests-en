@@ -4,8 +4,6 @@ import allure
 from conftest import get_with_retry, attach_json
 
 
-# UPDATE via form-data
-
 # На публичном Petstore POST /pet/{petId} через form-data не принимает частичные обновления (только name или только status)
 # и стабильно отдаёт 405/400, а не 200.
 
@@ -61,7 +59,6 @@ def test_pet_update_via_form(api_client, unique_pet_id, make_pet, new_name, new_
     logging.info("[UPDATE-FORM] DONE")
 
 
-# UPLOAD image
 @pytest.mark.regression
 @pytest.mark.flaky(reruns=2, reruns_delay=1)
 @allure.feature("Pet")
