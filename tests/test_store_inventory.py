@@ -10,24 +10,24 @@ from conftest import attach_json
 @pytest.mark.regression
 def test_store_inventory(api_client):
     """
-    GET /store/inventory — возвращает мапу {status -> quantity}
+    GET /store/inventory — returns a map {status -> quantity}
     """
-    with allure.step("Выполнить запрос GET /store/inventory"):
+    with allure.step("Execute GET /store/inventory request"):
         resp = api_client.get_inventory()
-        assert resp.status_code == 200, "Инвентарь недоступен"
+        assert resp.status_code == 200, "Inventory is not available"
         body = resp.json()
         attach_json("Inventory response", body)
 
-    with allure.step("Проверить структуру и значения инвентаря"):
-        assert isinstance(body, dict), "Ожидали объект-словарь"
+    with allure.step("Check the structure and values of the inventory"):
+        assert isinstance(body, dict), "Expected an object-dictionary"
         total = sum(body.values())
-        logging.info(f"Всего питомцев в инвентаре: {total}")
+        logging.info(f"Total pets in inventory: {total}")
         for k, v in body.items():
-            assert isinstance(k, str), "Ключи должны быть строками"
-            assert isinstance(v, int), f"Количество для '{k}' должно быть int"
-            assert v >= 0, f"Количество для '{k}' не должно быть отрицательным"
+            assert isinstance(k, str), "Keys must be strings"
+            assert isinstance(v, int), f"Quantity for '{k}' must be int"
+            assert v >= 0, f"Quantity for '{k}' must not be negative"
 
-    with allure.step("Проверить корректность известных ключей (available, pending, sold)"):
+    with allure.step("Check correctness of known keys (available, pending, sold)"):
         for known in ("available", "pending", "sold"):
             if known in body:
                 assert isinstance(body[known], int)

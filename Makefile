@@ -2,18 +2,18 @@ SHELL := /bin/bash
 .SHELLFLAGS := -eu -o pipefail -c
 .DEFAULT_GOAL := help
 
-# ==== Параметры с дефолтами ====
+# ==== Parameters with defaults ====
 ALLURE_RESULTS ?= allure-results
 ALLURE_REPORT  ?= allure-report
 PYTEST         ?= pytest
 EXIT_CODE_FILE ?= .pytest_exit_code
 
-# Опции, которые можно передавать в make:
+# Options that can be passed to make:
 #   MARK=smoke / regression / "smoke or regression"
-#   WORKERS=auto (или число)
-#   PYTEST_ARGS="... любые доп. аргументы ..."
+#   WORKERS=auto (or a number)
+#   PYTEST_ARGS="... any additional arguments ..."
 #
-# Примеры:
+# Examples:
 #   make report
 #   make smoke
 #   make regression
@@ -38,13 +38,13 @@ endef
 help:
 	@echo "Targets:"
 	@echo "  make report            - clean + pytest + allure open"
-	@echo "  make smoke             - report с MARK=smoke + allure open"
-	@echo "  make regression        - report с MARK=regression + allure open"
-	@echo "  make clean             - удалить allure-results и allure-report"
-	@echo "  make open-report       - только открыть уже сгенерированный отчёт"
+	@echo "  make smoke             - report with MARK=smoke + allure open"
+	@echo "  make regression        - report with MARK=regression + allure open"
+	@echo "  make clean             - remove allure-results and allure-report"
+	@echo "  make open-report       - only open the already generated report"
 	@echo ""
-	@echo "Параметры: MARK=..., WORKERS=..., PYTEST_ARGS=..."
-	@echo "Примеры:   make report MARK='smoke or regression' WORKERS=auto"
+	@echo "Parameters: MARK=..., WORKERS=..., PYTEST_ARGS=..."
+	@echo "Examples:   make report MARK='smoke or regression' WORKERS=auto"
 
 clean:
 	@rm -rf $(ALLURE_RESULTS) $(ALLURE_REPORT) $(EXIT_CODE_FILE) now.txt

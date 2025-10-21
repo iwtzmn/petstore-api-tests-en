@@ -8,12 +8,12 @@ from conftest import get_with_retry, attach_json
 @allure.story("Create pet")
 @pytest.mark.smoke
 @pytest.mark.regression
-# Проверяет базовый happy-path (один стабильный заказ)
+# Checks basic happy-path (one stable order)
 def test_pet_create(api_client, unique_pet_id, make_pet, cleanup):
     logging.info(f"CREATE pet_id={unique_pet_id}")
     with allure.step(f"CREATE pet_id={unique_pet_id}"):
         make_pet(unique_pet_id, status="available")
-        # добавляем элемент в cleanup
+        # add item to cleanup
         cleanup["pet"].append(unique_pet_id)
 
         resp = get_with_retry(api_client, unique_pet_id)
@@ -55,7 +55,7 @@ def test_pet_update_status(api_client, unique_pet_id, make_pet, cleanup, initial
     with allure.step(f"UPDATE pet_id={unique_pet_id}: {initial_status} -> {updated_status}"):
         logging.info(f"UPDATE pet_id={unique_pet_id}: {initial_status} -> {updated_status}")
         make_pet(unique_pet_id, status=initial_status)
-        # добавляем элемент в cleanup
+        # add item to cleanup
         cleanup["pet"].append(unique_pet_id)
 
         payload = {
@@ -69,7 +69,7 @@ def test_pet_update_status(api_client, unique_pet_id, make_pet, cleanup, initial
         attach_json("Update payload", payload)
         resp = api_client.update_pet(payload)
         attach_json("Response body", resp.json())
-        assert resp.status_code == 200, "Ошибка при обновлении питомца"
+        assert resp.status_code == 200, "Error updating pet"
 
         resp = get_with_retry(api_client, unique_pet_id, field="status", expected=updated_status)
         attach_json("Response body", resp.json())
@@ -77,28 +77,28 @@ def test_pet_update_status(api_client, unique_pet_id, make_pet, cleanup, initial
         assert resp.json()["status"] == updated_status
 
 
-# Для flaky используем pytest-rerunfailures:
+# For flaky use pytest-rerunfailures:
 @allure.feature("Pet")
 @allure.story("Delete pet (flaky public stand)")
-@pytest.mark.flaky(reruns=2, reruns_delay=1)  # повторим, если флак на публичном стенде
+@pytest.mark.flaky(reruns=2, reruns_delay=1)  # retry if flaky on public stand
 @pytest.mark.regression
 def test_pet_delete(api_client, pet_id):
     with allure.step(f"DELETE pet_id={pet_id}"):
         logging.info(f"DELETE pet_id={pet_id}")
 
-        # Сам DELETE
+        # The DELETE itself
         resp = api_client.delete_pet(pet_id)
         attach_json("Response body", resp.json())
         assert resp.status_code in (200, 204, 404)
 
-        # ждём подтверждения удаления
+        # wait for deletion confirmation
         resp = get_with_retry(api_client, pet_id, expect_deleted=True)
         attach_json("Response body", resp.json())
 
         if resp.status_code != 404:
-            logging.warning("Не удалён сразу, пробуем ещё раз")
+            logging.warning("Not deleted immediately, trying again")
             api_client.delete_pet(pet_id)
             resp = get_with_retry(api_client, pet_id, expect_deleted=True)
 
         if resp.status_code != 404:
-            pytest.xfail("Флак Petstore: ресурс иногда остаётся доступным после DELETE")
+            pytest.xfail("Petstore flaky: resource sometimes stays available after DELETE")
