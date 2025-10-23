@@ -1,9 +1,9 @@
-# виртуальное окружение
+# virtual environment
 .venv/
 env/
 venv/
 
-# кэш pytest
+# pytest cache
 .pytest_cache/
 __pycache__/
 
@@ -13,14 +13,14 @@ __pycache__/
 .pytest_exit_code
 now.txt
 
-# результаты тестов и отчётов
+# test results and reports
 allure-results/
 allure-report/
 reports/
 htmlcov/
 coverage.xml
 
-# временные файлы и логи
+# temporary files and logs
 *.log
 *.tmp
 *.bak
@@ -29,18 +29,18 @@ coverage.xml
 # macOS
 .DS_Store
 
-# файлы окружения
-# оставляем .env (он публичный и нужен для локального запуска)
-# если появятся секреты — добавить обратно в игнор
+# environment files
+# keep .env (it’s public and required for local runs)
+# if any secrets appear — add it back to ignore
 .env.*
 !.env
 
-# системные артефакты Python
+# Python system artifacts
 *.pyc
 *.pyo
 *.pyd
 
-# пакеты и установочные файлы
+# packages and build files
 *.egg
 *.egg-info/
 dist/
@@ -50,6 +50,6 @@ build/
 # Jupyter / notebooks
 .ipynb_checkpoints/
 
-# кэш pip
+# pip cache
 __pypackages__/
 pip-wheel-metadata/
